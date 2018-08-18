@@ -1,0 +1,25 @@
+// fonts
+$font1: 'Raleway', sans-serif;
+$font2: 'Roboto', sans-serif;
+
+// base colors
+$color1: #0c1931;
+$color2: #76bdff;
+$color3: #1c6cb8;
+
+@mixin transition($type: all, $duration: 0.3s, $ease: ease-out) {
+  -webkit-transition: $type $duration $ease;
+  -moz-transition: $type $duration $ease;
+  -o-transition: $type $duration $ease;
+  transition: $type $duration $ease;
+}
+
+@mixin grid($cols, $mrgn) {
+  float: left;
+  margin-right: $mrgn;
+  margin-bottom: $mrgn;
+  width: ((100% - (($cols - 1) * $mrgn)) / $cols);
+  &:nth-child(#{$cols}n) {
+    margin-right: 0;
+  }
+}
