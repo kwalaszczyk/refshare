@@ -10,6 +10,7 @@ const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
 const User = require("../../models/User");
+const initRootFolder = require("../../utlis/initRootFolder");
 
 // @route   POST api/users/register
 // @desc    Register a user - create local account
@@ -49,7 +50,10 @@ router.post("/register", (req, res) => {
           newUser.password = hash;
           newUser
             .save()
-            .then(user => res.json(user))
+            .then(user => {
+              initRootFolder(user.id);
+              res.json(user);
+            })
             .catch(err => res.json(err));
         });
       });
@@ -83,6 +87,8 @@ router.post("/login", (req, res) => {
             name: user.name,
             picture: user.picture
           };
+
+          initRootFolder(user.id);
 
           jwt.sign(
             payload,
