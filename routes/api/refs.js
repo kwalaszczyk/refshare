@@ -57,7 +57,7 @@ router.post(
           errors.nofolder = "Ref with given ID is not a folder";
           return res.status(404).json(errors);
         }
-        console.log(req.body);
+
         const newRef = new Refs({
           owner: req.user.id,
           name: req.body.name,

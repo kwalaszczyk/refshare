@@ -10,7 +10,7 @@ const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
 const User = require("../../models/User");
-const initRootFolder = require("../../utlis/initRootFolder");
+const initRootFolder = require("../../utils/initRootFolder");
 
 // @route   POST api/users/register
 // @desc    Register a user - create local account
