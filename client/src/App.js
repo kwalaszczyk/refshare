@@ -23,6 +23,7 @@ import Profile from "./components/profile/Profile";
 import Posts from "./components/posts/Posts";
 import Post from "./components/post/Post";
 import EditProfile from "./components/edit-profile/EditProfile";
+import RefTable from "./components/refs/RefTable";
 
 import "./css/App.css";
 
@@ -39,7 +40,7 @@ if (localStorage.jwtToken) {
   if (decoded.exp < currentTime) {
     store.dispatch(logoutUser());
     store.dispatch(clearCurrentProfile());
-    window.location.href = "/login";
+    if (window.location != null) window.location.href = "/login";
   }
 }
 
@@ -77,6 +78,9 @@ class App extends Component {
             </Switch>
             <Switch>
               <PrivateRoute exact path="/feed" component={Posts} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/folder/:id" component={RefTable} />
             </Switch>
             <Switch>
               <Route exact path="/not-found" component={NotFound} />

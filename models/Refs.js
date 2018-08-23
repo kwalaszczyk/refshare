@@ -9,9 +9,6 @@ const RefsSchema = new Schema({
   name: {
     type: String
   },
-  value: {
-    type: String
-  },
   isFolder: {
     type: Boolean,
     required: true

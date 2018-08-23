@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { logoutUser } from '../../actions/authActions';
-import { clearCurrentProfile } from '../../actions/profileActions';
-import { withRouter } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../actions/authActions";
+import { clearCurrentProfile } from "../../actions/profileActions";
+import { withRouter } from "react-router-dom";
 
 class Navbar extends Component {
   onLogoutClick(ev) {
@@ -38,7 +38,7 @@ class Navbar extends Component {
               className="rounded-circle"
               src={user.picture}
               alt={user.name}
-              style={{ width: '25px', marginRight: '5px' }}
+              style={{ width: "25px", marginRight: "5px" }}
             />
             Logout
           </a>
@@ -59,6 +59,14 @@ class Navbar extends Component {
           </Link>
         </li>
       </ul>
+    );
+
+    const myFolders = (
+      <li className="nav-item">
+        <Link className="nav-link" to="/folder/home">
+          My refs
+        </Link>
+      </li>
     );
 
     return (
@@ -83,10 +91,11 @@ class Navbar extends Component {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/profiles">
-                  {' '}
+                  {" "}
                   All Profiles
                 </Link>
               </li>
+              {isAuthenticated ? myFolders : null}
             </ul>
 
             {isAuthenticated ? authLinks : guestLinks}

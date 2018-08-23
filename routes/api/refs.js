@@ -3,14 +3,15 @@ const router = express.Router();
 const passport = require("passport");
 
 const Refs = require("../../models/Refs");
-const User = require("../../models/User");
 
 router.get(
   "/home",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
-    Refs.find({ owner: req.user.id, isRoot: true })
+    Refs.findOne({ owner: req.user.id, isRoot: true })
+      .populate("children", ["isFolder", "children", "name"])
+      .populate("owner", ["name"])
       .then(ref => {
         if (!ref) {
           errors.norefs = "There is no links for this user";
@@ -28,6 +29,8 @@ router.get(
   (req, res) => {
     const errors = {};
     Refs.findById(req.params.id)
+      .populate("children", ["isFolder", "children", "name"])
+      .populate("owner", ["name"])
       .then(ref => {
         if (!ref) {
           errors.norefs = "There is no folder with given ID";
@@ -39,12 +42,27 @@ router.get(
   }
 );
 
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Refs.findByIdAndRemove(req.params.id).then(deletedRef => {
+      Refs.findById(deletedRef.parent).then(
+        parent =>
+          (parent.children = parent.children.filter(children => {
+            children._id !== deletedRef._id;
+          }))
+      );
+    });
+    res.json({ success: true });
+  }
+);
+
 router.post(
   "/addRef/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
-
     //@TODO: validate
 
     Refs.findById(req.params.id)
@@ -61,7 +79,6 @@ router.post(
         const newRef = new Refs({
           owner: req.user.id,
           name: req.body.name,
-          value: req.body.value,
           isFolder: req.body.isFolder,
           parent: req.params.id
         });
