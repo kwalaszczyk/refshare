@@ -5,7 +5,6 @@ import {
   DELETE_REF,
   GET_ERRORS,
   ADD_REF,
-  START_EDITING,
   EDIT_REF,
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR
@@ -34,13 +33,6 @@ export const editRef = refData => dispatch => {
         payload: err.response.data
       })
     );
-};
-
-export const startEditing = row => dispatch => {
-  dispatch({
-    type: START_EDITING,
-    payload: row
-  });
 };
 
 export const addRef = (id, refData) => dispatch => {

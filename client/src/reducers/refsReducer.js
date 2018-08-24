@@ -2,7 +2,6 @@ import {
   GET_REFS,
   DELETE_REF,
   ADD_REF,
-  START_EDITING,
   EDIT_REF,
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR
@@ -41,11 +40,6 @@ export default function(state = initialState, action) {
         refContent: state.refContent.map(
           ref => (ref._id !== action.payload._id ? ref : action.payload)
         )
-      };
-    case START_EDITING:
-      return {
-        ...state,
-        editingRef: action.payload
       };
     case SHOW_SNACKBAR:
       return {
