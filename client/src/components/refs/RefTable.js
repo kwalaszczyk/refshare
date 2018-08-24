@@ -64,8 +64,9 @@ class RefTable extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, auth } = this.props;
     const { refs, refContent, snackbarText, snackbarIsOpen } = this.props.refs;
+    const isOwned = refs.owner._id === auth.user.id ? true : false;
     let rows = [];
 
     if (refContent) {
@@ -90,23 +91,28 @@ class RefTable extends Component {
           />
           <Table className={classes.table}>
             <TableHead>
-              <TableRow>
-                <TableCell style={{ width: "2rem" }} />
-                <TableCell>Name</TableCell>
-                <TableCell numeric={true} style={{ width: "1rem" }}>
-                  Edit
-                </TableCell>
-                <TableCell numeric={true} style={{ width: "1rem" }}>
-                  Copy to clipboard
-                </TableCell>
-                <TableCell numeric={true} style={{ width: "1rem" }}>
-                  Delete
-                </TableCell>
+              <TableRow style={{ backgroundColor: "#0099ff" }}>
+                <TableCell style={{ width: "5%" }} />
+                <TableCell style={{ width: "15%" }}>Name</TableCell>
+                <TableCell>Description</TableCell>
+                {isOwned ? (
+                  <React.Fragment>
+                    <TableCell numeric={true} style={{ width: "5%" }}>
+                      Edit
+                    </TableCell>
+                    <TableCell numeric={true} style={{ width: "5%" }}>
+                      Copy to clipboard
+                    </TableCell>
+                    <TableCell numeric={true} style={{ width: "5%" }}>
+                      Delete
+                    </TableCell>
+                  </React.Fragment>
+                ) : null}
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map(row => (
-                <RefRow key={row._id} row={row} />
+                <RefRow key={row._id} row={row} isOwned={isOwned} />
               ))}
             </TableBody>
           </Table>

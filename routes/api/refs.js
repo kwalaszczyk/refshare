@@ -10,7 +10,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Refs.findOne({ owner: req.user.id, isRoot: true })
-      .populate("children", ["isFolder", "children", "name"])
+      .populate("children", ["isFolder", "children", "name", "description"])
       .populate("owner", ["name"])
       .then(ref => {
         if (!ref) {
@@ -29,7 +29,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Refs.findById(req.params.id)
-      .populate("children", ["isFolder", "children", "name"])
+      .populate("children", ["isFolder", "children", "name", "description"])
       .populate("owner", ["name"])
       .then(ref => {
         if (!ref) {
@@ -89,9 +89,10 @@ router.post(
 
         const newRef = new Refs({
           owner: req.user.id,
+          parent: req.params.id,
           name: req.body.name,
           isFolder: req.body.isFolder,
-          parent: req.params.id
+          description: req.body.description
         });
 
         newRef.save().then(newRef => {

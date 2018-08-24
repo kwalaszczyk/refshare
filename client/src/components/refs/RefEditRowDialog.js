@@ -23,7 +23,8 @@ const styles = theme => ({
 class RefEditRowDialog extends Component {
   state = {
     open: false,
-    name: ""
+    name: "",
+    description: ""
   };
 
   handleClickOpen = () => {
@@ -36,7 +37,8 @@ class RefEditRowDialog extends Component {
 
   handleEdit = () => {
     const { row } = this.props;
-    const newRef = { id: row._id, name: this.state.name };
+    const { name, description } = this.state;
+    const newRef = { id: row._id, name, description };
 
     this.props.editRef(newRef);
     this.setState({ open: false });
@@ -49,7 +51,10 @@ class RefEditRowDialog extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ name: nextProps.name });
+    this.setState({
+      name: nextProps.name,
+      description: nextProps.description
+    });
   }
 
   render() {
@@ -79,6 +84,14 @@ class RefEditRowDialog extends Component {
               label={type === "folder" ? "Name" : "URL"}
               onChange={this.handleChange("name")}
               value={this.state.name}
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              id="description"
+              label={"Description"}
+              onChange={this.handleChange("description")}
+              value={this.state.description}
               fullWidth
             />
           </DialogContent>

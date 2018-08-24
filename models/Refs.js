@@ -13,6 +13,13 @@ const RefsSchema = new Schema({
     type: Boolean,
     required: true
   },
+  description: {
+    type: String
+  },
+  isPrivate: {
+    type: Boolean,
+    default: false
+  },
   children: [
     {
       type: Schema.Types.ObjectId,

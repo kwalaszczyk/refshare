@@ -47,7 +47,7 @@ class RefRow extends Component {
   };
 
   render() {
-    const { row, classes } = this.props;
+    const { row, isOwned, classes } = this.props;
     const to = row.isFolder ? row._id : row.name;
 
     return (
@@ -73,32 +73,41 @@ class RefRow extends Component {
             {row.name}
           </TableCell>
         )}
-        <TableCell numeric={true}>
-          <RefEditRowDialog name={row.name} row={row} />
-        </TableCell>
-        <TableCell numeric={true}>
-          {!row.isFolder ? (
-            <CopyToClipboard style={{ cursor: "pointer" }} text={row.name}>
-              <FileCopyIcon
-                onClick={this.handleOpenSnackbar.bind(this, "Link copied")}
+        <TableCell>{row.description}</TableCell>
+        {isOwned ? (
+          <React.Fragment>
+            <TableCell numeric={true}>
+              <RefEditRowDialog
+                name={row.name}
+                row={row}
+                description={row.description}
               />
-            </CopyToClipboard>
-          ) : null}
-        </TableCell>
-        <TableCell numeric={true}>
-          <IconButton
-            className={classes.button}
-            aria-label="Delete"
-            color="primary"
-          >
-            <DeleteIcon
-              onClick={this.onDeleteClick.bind(this, row._id, "delete")}
-              style={{ cursor: "pointer" }}
-            >
-              delete
-            </DeleteIcon>
-          </IconButton>
-        </TableCell>
+            </TableCell>
+            <TableCell numeric={true}>
+              {!row.isFolder ? (
+                <CopyToClipboard style={{ cursor: "pointer" }} text={row.name}>
+                  <FileCopyIcon
+                    onClick={this.handleOpenSnackbar.bind(this, "Link copied")}
+                  />
+                </CopyToClipboard>
+              ) : null}
+            </TableCell>
+            <TableCell numeric={true}>
+              <IconButton
+                className={classes.button}
+                aria-label="Delete"
+                color="primary"
+              >
+                <DeleteIcon
+                  onClick={this.onDeleteClick.bind(this, row._id, "delete")}
+                  style={{ cursor: "pointer" }}
+                >
+                  delete
+                </DeleteIcon>
+              </IconButton>
+            </TableCell>
+          </React.Fragment>
+        ) : null}
       </TableRow>
     );
   }

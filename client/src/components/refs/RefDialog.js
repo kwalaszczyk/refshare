@@ -23,7 +23,8 @@ const styles = theme => ({
 class RefDialog extends Component {
   state = {
     open: false,
-    name: ""
+    name: "",
+    description: ""
   };
 
   handleClickOpen = () => {
@@ -35,10 +36,11 @@ class RefDialog extends Component {
   };
 
   handleAdd = () => {
-    const { currentFolderId, type } = this.props;
+    const { type } = this.props;
     const { _id } = this.props.refs.refs;
+    const { name, description } = this.state;
     const isFolder = type === "folder" ? true : false;
-    const newRef = { name: this.state.name, isFolder };
+    const newRef = { name, isFolder, description };
     this.props.addRef(_id, newRef);
     this.setState({ open: false });
   };
@@ -48,22 +50,15 @@ class RefDialog extends Component {
       [name]: event.target.value
     });
   };
-
-  isEmpty = obj => {
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) return false;
-    }
-    return true;
-  };
-
   render() {
     const { classes, label, type } = this.props;
     return (
-      <div>
+      <React.Fragment>
         <Button
           variant="outlined"
           className={classes.button}
           onClick={this.handleClickOpen}
+          style={{ display: "inline-block" }}
         >
           <AddCircleIcon />
           {label}
@@ -84,6 +79,13 @@ class RefDialog extends Component {
               onChange={this.handleChange("name")}
               fullWidth
             />
+            <TextField
+              margin="dense"
+              id="description"
+              label={"Description"}
+              onChange={this.handleChange("description")}
+              fullWidth
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -94,7 +96,7 @@ class RefDialog extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }

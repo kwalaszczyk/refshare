@@ -8,7 +8,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  refs: null,
+  refs: { owner: {} },
   refContent: [],
   editingRef: {},
   loading: false,

@@ -26,7 +26,12 @@ export const editRef = refData => dispatch => {
   axios
     .post(`/api/refs/editRef/${refData.id}`, refData)
     .then(res => dispatch({ type: EDIT_REF, payload: res.data }))
-    .then(dispatch({ type: SHOW_SNACKBAR, payload: "Ref edited!" }))
+    .then(
+      dispatch({
+        type: SHOW_SNACKBAR,
+        payload: `${refData.isFolder === true ? "Folder " : "Link "} edited!`
+      })
+    )
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -43,11 +48,17 @@ export const addRef = (id, refData) => dispatch => {
         _id: res.data._id,
         name: res.data.name,
         isFolder: res.data.isFolder,
-        children: res.data.children
+        children: res.data.children,
+        description: res.data.description
       };
       dispatch({ type: ADD_REF, payload: newRef });
     })
-    .then(dispatch({ type: SHOW_SNACKBAR, payload: "Ref added!" }))
+    .then(
+      dispatch({
+        type: SHOW_SNACKBAR,
+        payload: `${refData.isFolder === true ? "Folder " : "Link "} added!`
+      })
+    )
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
