@@ -5,12 +5,13 @@ import FolderIcon from "@material-ui/icons/Folder";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
-import EditIcon from "@material-ui/icons/Edit";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import IconButton from "@material-ui/core/IconButton";
 import { connect } from "react-redux";
-import { deleteRef } from "../../actions/refsActions";
+import { deleteRef, showSnackbar } from "../../actions/refsActions";
 import { withStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+import RefEditRowDialog from "./RefEditRowDialog";
 
 const styles = theme => ({
   button: {
@@ -26,38 +27,61 @@ class RefRow extends Component {
     this.props.deleteRef(row_id);
   };
 
+  state = {
+    to: ""
+  };
+
+  componentDidMount() {
+    this.setState({ to: this.props.to });
+  }
+
+  addProtocolToLink = url => {
+    if (!/^https?:\/\//i.test(url)) {
+      url = "http://" + url;
+    }
+    return url;
+  };
+
+  handleOpenSnackbar = text => {
+    this.props.showSnackbar(text);
+  };
+
   render() {
-    const { row, handleOpenSnackbar, classes } = this.props;
+    const { row, classes } = this.props;
+    const to = row.isFolder ? row._id : row.name;
 
     return (
       <TableRow key={row._id}>
         <TableCell>
           {row.isFolder ? <FolderIcon /> : <InsertLinkIcon />}
         </TableCell>
-        <TableCell
-          component="a"
-          href={row.isFolder ? row._id : row.name}
-          style={{ cursor: "pointer" }}
-        >
-          {row.name}
-        </TableCell>
-        {/* <TableCell
-          component={Link}
-          to={row.isFolder ? row._id : row.value}
-          style={{ cursor: "pointer" }}
-        >
-          {value}
-        </TableCell> */}
-        <TableCell numeric={true}>
-          <EditIcon
-            onClick={this.onEditClick.bind(this, row._id, "edit")}
+        {row.isFolder ? (
+          <TableCell
+            component={Link}
+            to={to != null ? to : "/"}
             style={{ cursor: "pointer" }}
-          />
+          >
+            {row.name}
+          </TableCell>
+        ) : (
+          <TableCell
+            component="a"
+            href={this.addProtocolToLink(row.name)}
+            target="_blank"
+            style={{ cursor: "pointer" }}
+          >
+            {row.name}
+          </TableCell>
+        )}
+        <TableCell numeric={true}>
+          <RefEditRowDialog name={row.name} row={row} />
         </TableCell>
         <TableCell numeric={true}>
           {!row.isFolder ? (
             <CopyToClipboard style={{ cursor: "pointer" }} text={row.name}>
-              <FileCopyIcon onClick={handleOpenSnackbar} />
+              <FileCopyIcon
+                onClick={this.handleOpenSnackbar.bind(this, "Link copied")}
+              />
             </CopyToClipboard>
           ) : null}
         </TableCell>
@@ -81,5 +105,5 @@ class RefRow extends Component {
 }
 export default connect(
   null,
-  { deleteRef }
+  { deleteRef, showSnackbar }
 )(withStyles(styles)(RefRow));

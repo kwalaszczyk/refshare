@@ -12,7 +12,11 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
 import { connect } from "react-redux";
-import { getRefs } from "../../actions/refsActions";
+import {
+  getRefs,
+  closeSnackbar,
+  showSnackbar
+} from "../../actions/refsActions";
 import RefRow from "./RefRow";
 import RefDialog from "./RefDialog";
 
@@ -35,11 +39,12 @@ class RefTable extends Component {
   state = {
     snackbarOpen: false,
     modalOpen: false,
-    dialogOpen: false
+    dialogOpen: false,
+    currentFolder: ""
   };
 
   handleCloseSnackbar = () => {
-    this.setState({ snackbarOpen: false });
+    this.props.closeSnackbar();
   };
 
   handleOpenSnackbar = () => {
@@ -48,18 +53,19 @@ class RefTable extends Component {
 
   componentDidMount() {
     this.props.getRefs(this.props.match.params.id);
+    this.setState({ currentFolder: this.props.match.params.id });
   }
 
-  componentWillReceiveProps(nextProp) {
-    console.log(nextProp);
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.currentFolder !== this.props.match.params.id) {
+      this.props.getRefs(this.props.match.params.id);
+      this.setState({ currentFolder: this.props.match.params.id });
+    }
   }
 
   render() {
     const { classes } = this.props;
-    const { refs, refContent } = this.props.refs;
-    const { user } = this.props.auth;
-    const { snackbarOpen, modalOpen, dialogOpen } = this.state;
-
+    const { refs, refContent, snackbarText, snackbarIsOpen } = this.props.refs;
     let rows = [];
 
     if (refContent) {
@@ -73,6 +79,7 @@ class RefTable extends Component {
         <Paper className={classes.root}>
           <RefDialog
             currentFolderId={this.props.match.params.id}
+            refId={refs}
             label={"add link"}
             type={"link"}
           />
@@ -99,12 +106,7 @@ class RefTable extends Component {
             </TableHead>
             <TableBody>
               {rows.map(row => (
-                <RefRow
-                  key={row._id}
-                  row={row}
-                  handleOpenSnackbar={this.handleOpenSnackbar}
-                  isEditing={false}
-                />
+                <RefRow key={row._id} row={row} />
               ))}
             </TableBody>
           </Table>
@@ -114,13 +116,13 @@ class RefTable extends Component {
             vertical: "bottom",
             horizontal: "left"
           }}
-          open={snackbarOpen}
+          open={snackbarIsOpen}
           onClose={this.handleCloseSnackbar}
           autoHideDuration={2000}
           ContentProps={{
             "aria-describedby": "message-id"
           }}
-          message={<span id="message-id">Link copied to clipboard!</span>}
+          message={<span id="message-id">{snackbarText}</span>}
           action={[
             <IconButton
               key="close"
@@ -149,5 +151,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getRefs }
+  { getRefs, showSnackbar, closeSnackbar }
 )(withStyles(styles)(RefTable));

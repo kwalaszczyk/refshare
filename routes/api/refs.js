@@ -59,6 +59,16 @@ router.delete(
 );
 
 router.post(
+  "/editRef/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Refs.findByIdAndUpdate(req.params.id, req.body, { new: true }).then(ref =>
+      res.json(ref)
+    );
+  }
+);
+
+router.post(
   "/addRef/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -66,6 +76,7 @@ router.post(
     //@TODO: validate
 
     Refs.findById(req.params.id)
+      .populate("children", "name")
       .then(ref => {
         if (ref.owner != req.user.id) {
           errors.notpermitted = "You can add refs only in folders you own";
@@ -85,7 +96,7 @@ router.post(
 
         newRef.save().then(newRef => {
           ref.children.push(newRef);
-          ref.save().then(ref => res.json(ref));
+          ref.save().then(ref => res.json(newRef));
         });
       })
       .catch(err =>

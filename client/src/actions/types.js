@@ -14,3 +14,6 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const GET_REFS = "GET_REFS";
 export const DELETE_REF = "DELETE_REF";
 export const ADD_REF = "ADD_REF";
+export const EDIT_REF = "EDIT_REF";
+export const SHOW_SNACKBAR = "SHOW_SNACKBAR";
+export const CLOSE_SNACKBAR = "CLOSE_SNACKBAR";

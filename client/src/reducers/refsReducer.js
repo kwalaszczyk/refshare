@@ -1,9 +1,20 @@
-import { GET_REFS, DELETE_REF, ADD_REF } from "../actions/types";
+import {
+  GET_REFS,
+  DELETE_REF,
+  ADD_REF,
+  START_EDITING,
+  EDIT_REF,
+  SHOW_SNACKBAR,
+  CLOSE_SNACKBAR
+} from "../actions/types";
 
 const initialState = {
   refs: null,
   refContent: [],
-  loading: false
+  editingRef: {},
+  loading: false,
+  snackbarText: "",
+  snackbarIsOpen: false
 };
 
 export default function(state = initialState, action) {
@@ -23,6 +34,30 @@ export default function(state = initialState, action) {
       return {
         ...state,
         refContent: [action.payload, ...state.refContent]
+      };
+    case EDIT_REF:
+      return {
+        ...state,
+        refContent: state.refContent.map(
+          ref => (ref._id !== action.payload._id ? ref : action.payload)
+        )
+      };
+    case START_EDITING:
+      return {
+        ...state,
+        editingRef: action.payload
+      };
+    case SHOW_SNACKBAR:
+      return {
+        ...state,
+        snackbarText: action.payload,
+        snackbarIsOpen: true
+      };
+    case CLOSE_SNACKBAR:
+      return {
+        ...state,
+        snackbarText: "",
+        snackbarIsOpen: false
       };
     default:
       return state;

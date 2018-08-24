@@ -6,10 +6,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { withStyles } from "@material-ui/core/styles";
+import EditIcon from "@material-ui/icons/Edit";
 import { connect } from "react-redux";
-import { addRef } from "../../actions/refsActions";
+import { addRef, editRef } from "../../actions/refsActions";
 
 const styles = theme => ({
   button: {
@@ -20,7 +20,7 @@ const styles = theme => ({
   }
 });
 
-class RefDialog extends Component {
+class RefEditRowDialog extends Component {
   state = {
     open: false,
     name: ""
@@ -34,12 +34,11 @@ class RefDialog extends Component {
     this.setState({ open: false });
   };
 
-  handleAdd = () => {
-    const { currentFolderId, type } = this.props;
-    const { _id } = this.props.refs.refs;
-    const isFolder = type === "folder" ? true : false;
-    const newRef = { name: this.state.name, isFolder };
-    this.props.addRef(_id, newRef);
+  handleEdit = () => {
+    const { row } = this.props;
+    const newRef = { id: row._id, name: this.state.name };
+
+    this.props.editRef(newRef);
     this.setState({ open: false });
   };
 
@@ -49,12 +48,9 @@ class RefDialog extends Component {
     });
   };
 
-  isEmpty = obj => {
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) return false;
-    }
-    return true;
-  };
+  componentWillReceiveProps(nextProps) {
+    this.setState({ name: nextProps.name });
+  }
 
   render() {
     const { classes, label, type } = this.props;
@@ -65,7 +61,7 @@ class RefDialog extends Component {
           className={classes.button}
           onClick={this.handleClickOpen}
         >
-          <AddCircleIcon />
+          <EditIcon />
           {label}
         </Button>
         <Dialog
@@ -73,15 +69,16 @@ class RefDialog extends Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Add {type}</DialogTitle>
+          <DialogTitle id="form-dialog-title">Edit {type}</DialogTitle>
           <DialogContent>
-            <DialogContentText>Insert value of new {type}</DialogContentText>
+            <DialogContentText>Insert value of {type}</DialogContentText>
             <TextField
               autoFocus
               margin="dense"
               id="name"
               label={type === "folder" ? "Name" : "URL"}
               onChange={this.handleChange("name")}
+              value={this.state.name}
               fullWidth
             />
           </DialogContent>
@@ -89,8 +86,8 @@ class RefDialog extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleAdd} color="primary">
-              Add
+            <Button onClick={this.handleEdit} color="primary">
+              Update
             </Button>
           </DialogActions>
         </Dialog>
@@ -105,5 +102,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addRef }
-)(withStyles(styles)(RefDialog));
+  { addRef, editRef }
+)(withStyles(styles)(RefEditRowDialog));
