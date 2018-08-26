@@ -7,19 +7,24 @@ import {
   ADD_REF,
   EDIT_REF,
   SHOW_SNACKBAR,
-  CLOSE_SNACKBAR
+  CLOSE_SNACKBAR,
+  GET_BREADCRUMBS
 } from "./types";
 
-export const getRefs = id => dispatch => {
-  axios
-    .get(`/api/refs/${id}`)
-    .then(res => dispatch({ type: GET_REFS, payload: res.data }))
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
+export const getRefs = id => async dispatch => {
+  try {
+    let res = await axios.get(`/api/refs/${id}`);
+    dispatch({ type: GET_REFS, payload: res.data });
+    if (id !== "home") {
+      let breadcrumbs = await axios.get(`/api/refs/breadcrumbs/${id}`);
+      dispatch({ type: GET_BREADCRUMBS, payload: breadcrumbs.data });
+    }
+  } catch (err) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    });
+  }
 };
 
 export const editRef = refData => dispatch => {

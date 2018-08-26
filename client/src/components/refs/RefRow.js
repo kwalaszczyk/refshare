@@ -81,6 +81,7 @@ class RefRow extends Component {
                 name={row.name}
                 row={row}
                 description={row.description}
+                isPrivate={row.isPrivate}
               />
             </TableCell>
             <TableCell numeric={true}>

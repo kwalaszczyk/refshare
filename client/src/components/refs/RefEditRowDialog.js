@@ -10,6 +10,10 @@ import { withStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { connect } from "react-redux";
 import { addRef, editRef } from "../../actions/refsActions";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import LockIcon from "@material-ui/icons/Lock";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
 
 const styles = theme => ({
   button: {
@@ -24,7 +28,8 @@ class RefEditRowDialog extends Component {
   state = {
     open: false,
     name: "",
-    description: ""
+    description: "",
+    isPrivate: false
   };
 
   handleClickOpen = () => {
@@ -37,8 +42,8 @@ class RefEditRowDialog extends Component {
 
   handleEdit = () => {
     const { row } = this.props;
-    const { name, description } = this.state;
-    const newRef = { id: row._id, name, description };
+    const { name, description, isPrivate } = this.state;
+    const newRef = { id: row._id, name, description, isPrivate };
 
     this.props.editRef(newRef);
     this.setState({ open: false });
@@ -50,15 +55,24 @@ class RefEditRowDialog extends Component {
     });
   };
 
+  handleCheckboxChange = name => event => {
+    this.setState({
+      [name]: event.target.checked
+    });
+  };
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       name: nextProps.name,
-      description: nextProps.description
+      description: nextProps.description,
+      isPrivate: nextProps.isPrivate
     });
   }
 
   render() {
-    const { classes, label, type } = this.props;
+    const { classes, label, row } = this.props;
+    const type = row.isFolder ? "folder" : "link";
+
     return (
       <div>
         <Button
@@ -81,7 +95,7 @@ class RefEditRowDialog extends Component {
               autoFocus
               margin="dense"
               id="name"
-              label={type === "folder" ? "Name" : "URL"}
+              label={type ? "Name" : "URL"}
               onChange={this.handleChange("name")}
               value={this.state.name}
               fullWidth
@@ -94,6 +108,20 @@ class RefEditRowDialog extends Component {
               value={this.state.description}
               fullWidth
             />
+            {row.isFolder ? (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    icon={<LockOpenIcon />}
+                    checkedIcon={<LockIcon />}
+                    checked={this.state.isPrivate}
+                    value={"isPrivate"}
+                    onChange={this.handleCheckboxChange("isPrivate")}
+                  />
+                }
+                label={"Make it private"}
+              />
+            ) : null}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

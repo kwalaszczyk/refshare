@@ -58,9 +58,13 @@ class RefDialog extends Component {
           variant="outlined"
           className={classes.button}
           onClick={this.handleClickOpen}
-          style={{ display: "inline-block" }}
+          style={{
+            display: "inline-block",
+            float: "right",
+            marginRight: "20px"
+          }}
         >
-          <AddCircleIcon />
+          <AddCircleIcon style={{ marginRight: "10px" }} />
           {label}
         </Button>
         <Dialog

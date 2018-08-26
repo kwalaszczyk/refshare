@@ -4,7 +4,8 @@ import {
   ADD_REF,
   EDIT_REF,
   SHOW_SNACKBAR,
-  CLOSE_SNACKBAR
+  CLOSE_SNACKBAR,
+  GET_BREADCRUMBS
 } from "../actions/types";
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   editingRef: {},
   loading: false,
   snackbarText: "",
-  snackbarIsOpen: false
+  snackbarIsOpen: false,
+  breadcrumbs: []
 };
 
 export default function(state = initialState, action) {
@@ -22,7 +24,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         refs: action.payload,
-        refContent: action.payload.children
+        refContent: action.payload.children,
+        breadcrumbs: action.payload.breadcrumbs
       };
     case DELETE_REF:
       return {
@@ -52,6 +55,11 @@ export default function(state = initialState, action) {
         ...state,
         snackbarText: "",
         snackbarIsOpen: false
+      };
+    case GET_BREADCRUMBS:
+      return {
+        ...state,
+        breadcrumbs: action.payload
       };
     default:
       return state;

@@ -19,6 +19,7 @@ import {
 } from "../../actions/refsActions";
 import RefRow from "./RefRow";
 import RefDialog from "./RefDialog";
+import RefBreadcrums from "./RefBreadcrumbs";
 
 const styles = theme => ({
   root: {
@@ -27,7 +28,8 @@ const styles = theme => ({
     overflowX: "auto"
   },
   table: {
-    minWidth: 700
+    minWidth: 700,
+    marginTop: 75
   },
   close: {
     width: theme.spacing.unit * 4,
@@ -78,6 +80,7 @@ class RefTable extends Component {
     return (
       <div className="custom-template not-vert-center">
         <Paper className={classes.root}>
+          <RefBreadcrums />
           <RefDialog
             currentFolderId={this.props.match.params.id}
             refId={refs}
@@ -91,19 +94,41 @@ class RefTable extends Component {
           />
           <Table className={classes.table}>
             <TableHead>
-              <TableRow style={{ backgroundColor: "#0099ff" }}>
-                <TableCell style={{ width: "5%" }} />
-                <TableCell style={{ width: "15%" }}>Name</TableCell>
-                <TableCell>Description</TableCell>
+              <TableRow style={{ backgroundColor: "#0c1931" }}>
+                <TableCell style={{ width: "5%", color: "white" }} />
+                <TableCell style={{ width: "15%", color: "white" }}>
+                  Name
+                </TableCell>
+                <TableCell style={{ color: "white" }}>Description</TableCell>
                 {isOwned ? (
                   <React.Fragment>
-                    <TableCell numeric={true} style={{ width: "5%" }}>
+                    <TableCell
+                      style={{
+                        textAlign: "center",
+                        width: "5%",
+                        color: "white"
+                      }}
+                    >
                       Edit
                     </TableCell>
-                    <TableCell numeric={true} style={{ width: "5%" }}>
+                    <TableCell
+                      numeric={true}
+                      style={{
+                        width: "5%",
+                        color: "white",
+                        textAlign: "center"
+                      }}
+                    >
                       Copy to clipboard
                     </TableCell>
-                    <TableCell numeric={true} style={{ width: "5%" }}>
+                    <TableCell
+                      numeric={true}
+                      style={{
+                        width: "5%",
+                        color: "white",
+                        textAlign: "center"
+                      }}
+                    >
                       Delete
                     </TableCell>
                   </React.Fragment>

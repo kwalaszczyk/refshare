@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const mongoose = require("mongoose");
 
 const Refs = require("../../models/Refs");
 
@@ -10,7 +11,13 @@ router.get(
   (req, res) => {
     const errors = {};
     Refs.findOne({ owner: req.user.id, isRoot: true })
-      .populate("children", ["isFolder", "children", "name", "description"])
+      .populate("children", [
+        "isFolder",
+        "children",
+        "name",
+        "description",
+        "isPrivate"
+      ])
       .populate("owner", ["name"])
       .then(ref => {
         if (!ref) {
@@ -29,13 +36,26 @@ router.get(
   (req, res) => {
     const errors = {};
     Refs.findById(req.params.id)
-      .populate("children", ["isFolder", "children", "name", "description"])
+      .populate("children", [
+        "isFolder",
+        "children",
+        "name",
+        "description",
+        "isPrivate"
+      ])
       .populate("owner", ["name"])
       .then(ref => {
         if (!ref) {
           errors.norefs = "There is no folder with given ID";
           return res.status(404).json(errors);
         }
+        if (ref.isPrivate && ref.owner.id !== req.user.id) {
+          errors.norefs = "This folder is private";
+          return res.status(401).json(errors);
+        }
+        ref.children = ref.children.filter(
+          child => (child.isFolder && child.isPrivate ? null : child)
+        );
         res.json(ref);
       })
       .catch(err => res.status(404).json(err));
@@ -58,13 +78,82 @@ router.delete(
   }
 );
 
+router.get(
+  "/breadcrumbs/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Refs.aggregate(
+      [
+        { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+        {
+          $graphLookup: {
+            from: "refs",
+            startWith: "$parent",
+            connectFromField: "parent",
+            connectToField: "_id",
+            depthField: "depth",
+            as: "parents"
+          }
+        }
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        const parents = result[0].parents
+          .map(p => ({
+            name: p.name ? p.name : "root",
+            id: p._id,
+            depth: p.depth
+          }))
+          .sort((p1, p2) => p2.depth - p1.depth);
+        res.json(parents);
+      }
+    );
+  }
+);
+
+const parents = [];
+
+getParentsByFolderId = id => {
+  Refs.aggregate(
+    [
+      { $match: { _id: mongoose.Types.ObjectId(id) } },
+      {
+        $graphLookup: {
+          from: "refs",
+          startWith: "$parent",
+          connectFromField: "parent",
+          connectToField: "_id",
+          depthField: "depth",
+          as: "parents"
+        }
+      }
+    ],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const parents = result[0].parents
+        .map(p => ({
+          name: p.name ? p.name : "root",
+          id: p._id,
+          depth: p.depth
+        }))
+        .sort((p1, p2) => p2.depth - p1.depth);
+    }
+  );
+};
+
 router.post(
   "/editRef/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Refs.findByIdAndUpdate(req.params.id, req.body, { new: true }).then(ref =>
-      res.json(ref)
-    );
+    Refs.findByIdAndUpdate(req.params.id, req.body, { new: true }).then(ref => {
+      res.json(ref);
+    });
   }
 );
 
@@ -92,7 +181,8 @@ router.post(
           parent: req.params.id,
           name: req.body.name,
           isFolder: req.body.isFolder,
-          description: req.body.description
+          description: req.body.description,
+          isPrivate: req.body.isPrivate
         });
 
         newRef.save().then(newRef => {
