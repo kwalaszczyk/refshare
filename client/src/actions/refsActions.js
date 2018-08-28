@@ -8,6 +8,7 @@ import {
   EDIT_REF,
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR,
+  CLEAR_ERRORS,
   GET_BREADCRUMBS
 } from "./types";
 
@@ -70,19 +71,18 @@ export const addRef = (id, refData) => dispatch => {
         favorites: res.data.favorites
       };
       dispatch({ type: ADD_REF, payload: newRef });
-    })
-    .then(
+      dispatch({ type: CLEAR_ERRORS });
       dispatch({
         type: SHOW_SNACKBAR,
         payload: `${refData.isFolder === true ? "Folder " : "Link "} added!`
-      })
-    )
-    .catch(err =>
+      });
+    })
+    .catch(err => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
-    );
+      });
+    });
 };
 
 export const deleteRef = id => dispatch => {
@@ -109,4 +109,10 @@ export const closeSnackbar = () => dispatch => {
   dispatch({
     type: CLOSE_SNACKBAR
   });
+};
+
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
 };

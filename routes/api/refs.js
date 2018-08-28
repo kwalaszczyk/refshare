@@ -4,6 +4,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 
 const Refs = require("../../models/Refs");
+const validateRefsInput = require("../../validation/ref");
 
 router.get(
   "/favorites/:id",
@@ -66,6 +67,7 @@ router.get(
         }
         if (ref.isPrivate && ref.owner.id !== req.user.id) {
           errors.norefs = "This folder is private";
+          errors.refowner = ref.owner;
           return res.status(401).json(errors);
         }
         if (ref.owner._id != req.user.id)
@@ -145,7 +147,12 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
-    //@TODO: validate
+
+    const { validationErrors, isValid } = validateRefsInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(validationErrors);
+    }
 
     Refs.findById(req.params.id)
       .populate("children", "name")

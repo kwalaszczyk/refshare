@@ -59,17 +59,14 @@ class RefTable extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (
-      prevState.currentFolder !== this.props.match.params.id &&
-      prevProps.refs.refContent.length !== 0
-    ) {
+    if (prevState.currentFolder !== this.props.match.params.id) {
       this.props.getRefs(this.props.match.params.id);
       this.setState({ currentFolder: this.props.match.params.id });
     }
   }
 
   render() {
-    const { classes, auth } = this.props;
+    const { classes, auth, errors } = this.props;
     const { refs, refContent, snackbarText, snackbarIsOpen } = this.props.refs;
     const isOwned = refs.owner._id === auth.user.id ? true : false;
     let rows = [];
@@ -80,21 +77,29 @@ class RefTable extends Component {
         return y.isFolder - x.isFolder;
       });
     }
+
     return (
       <div className="custom-template not-vert-center">
         <Paper className={classes.root}>
           <RefBreadcrums />
-          <RefDialog
-            currentFolderId={this.props.match.params.id}
-            refId={refs}
-            label={"add link"}
-            type={"link"}
-          />
-          <RefDialog
-            currentFolderId={this.props.match.params.id}
-            label={"add folder"}
-            type={"folder"}
-          />
+          {isOwned ? (
+            <React.Fragment>
+              <RefDialog
+                currentFolderId={this.props.match.params.id}
+                refId={refs}
+                label={"add link"}
+                type={"link"}
+              />
+              <RefDialog
+                currentFolderId={this.props.match.params.id}
+                label={"add folder"}
+                type={"folder"}
+              />
+            </React.Fragment>
+          ) : null}
+          {errors.norefs && (
+            <h3>Sorry! {errors.norefs}. Ask owner to make it public.</h3>
+          )}
           <Table className={classes.table}>
             <TableHead>
               <TableRow style={{ backgroundColor: "#0c1931" }}>
@@ -190,7 +195,8 @@ RefTable.propTypes = {
 
 const mapStateToProps = state => ({
   refs: state.refs,
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 
 export default connect(

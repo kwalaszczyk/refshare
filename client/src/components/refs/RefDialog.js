@@ -24,7 +24,8 @@ class RefDialog extends Component {
   state = {
     open: false,
     name: "",
-    description: ""
+    description: "",
+    errors: {}
   };
 
   handleClickOpen = () => {
@@ -35,6 +36,12 @@ class RefDialog extends Component {
     this.setState({ open: false });
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   handleAdd = () => {
     const { type } = this.props;
     const { _id } = this.props.refs.refs;
@@ -42,7 +49,6 @@ class RefDialog extends Component {
     const isFolder = type === "folder" ? true : false;
     const newRef = { name, isFolder, description };
     this.props.addRef(_id, newRef);
-    this.setState({ open: false });
   };
 
   handleChange = name => event => {
@@ -51,7 +57,7 @@ class RefDialog extends Component {
     });
   };
   render() {
-    const { classes, label, type } = this.props;
+    const { classes, label, type, errors, refs } = this.props;
     return (
       <React.Fragment>
         <Button
@@ -81,6 +87,8 @@ class RefDialog extends Component {
               id="name"
               label={type === "folder" ? "Name" : "URL"}
               onChange={this.handleChange("name")}
+              error={errors.url ? true : false}
+              helperText={errors.url ? errors.url : null}
               fullWidth
             />
             <TextField
@@ -106,7 +114,8 @@ class RefDialog extends Component {
 }
 
 const mapStateToProps = state => ({
-  refs: state.refs
+  refs: state.refs,
+  errors: state.errors
 });
 
 export default connect(
