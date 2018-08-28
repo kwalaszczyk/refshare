@@ -1,6 +1,6 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React from "react";
+import classnames from "classnames";
+import PropTypes from "prop-types";
 
 const SelectListGroup = ({
   name,
@@ -25,8 +25,8 @@ const SelectListGroup = ({
         </label>
       )}
       <select
-        className={classnames('form-control form-control-lg', {
-          'is-invalid': error
+        className={classnames("form-control form-control-lg", {
+          "is-invalid": error
         })}
         name={name}
         value={value}
@@ -42,7 +42,6 @@ const SelectListGroup = ({
 
 SelectListGroup.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
   error: PropTypes.string,
   info: PropTypes.string,
   onChange: PropTypes.func.isRequired,

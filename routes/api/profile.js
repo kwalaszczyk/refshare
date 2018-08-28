@@ -106,7 +106,10 @@ router.post(
     if (req.body.status) profileFields.status = req.body.status;
     if (req.body.githubusername)
       profileFields.githubusername = req.body.githubusername;
-    if (typeof req.body.interests !== "undefined") {
+    if (
+      typeof req.body.interests !== "undefined" &&
+      req.body.interests.length !== 0
+    ) {
       profileFields.interests = req.body.interests.split(",");
     }
     profileFields.social = {};

@@ -6,6 +6,19 @@ const mongoose = require("mongoose");
 const Refs = require("../../models/Refs");
 
 router.get(
+  "/favorites/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Refs.find({ favorites: req.params.id })
+      .populate("owner", ["name", "id", "username"])
+      .then(folders => {
+        res.json(folders);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+router.get(
   "/home",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -16,7 +29,8 @@ router.get(
         "children",
         "name",
         "description",
-        "isPrivate"
+        "isPrivate",
+        "favorites"
       ])
       .populate("owner", ["name"])
       .then(ref => {
@@ -41,7 +55,8 @@ router.get(
         "children",
         "name",
         "description",
-        "isPrivate"
+        "isPrivate",
+        "favorites"
       ])
       .populate("owner", ["name"])
       .then(ref => {
@@ -53,9 +68,10 @@ router.get(
           errors.norefs = "This folder is private";
           return res.status(401).json(errors);
         }
-        ref.children = ref.children.filter(
-          child => (child.isFolder && child.isPrivate ? null : child)
-        );
+        if (ref.owner._id != req.user.id)
+          ref.children = ref.children.filter(
+            child => (child.isFolder && child.isPrivate ? null : child)
+          );
         res.json(ref);
       })
       .catch(err => res.status(404).json(err));
@@ -114,39 +130,6 @@ router.get(
   }
 );
 
-const parents = [];
-
-getParentsByFolderId = id => {
-  Refs.aggregate(
-    [
-      { $match: { _id: mongoose.Types.ObjectId(id) } },
-      {
-        $graphLookup: {
-          from: "refs",
-          startWith: "$parent",
-          connectFromField: "parent",
-          connectToField: "_id",
-          depthField: "depth",
-          as: "parents"
-        }
-      }
-    ],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      const parents = result[0].parents
-        .map(p => ({
-          name: p.name ? p.name : "root",
-          id: p._id,
-          depth: p.depth
-        }))
-        .sort((p1, p2) => p2.depth - p1.depth);
-    }
-  );
-};
-
 router.post(
   "/editRef/:id",
   passport.authenticate("jwt", { session: false }),
@@ -167,7 +150,7 @@ router.post(
     Refs.findById(req.params.id)
       .populate("children", "name")
       .then(ref => {
-        if (ref.owner != req.user.id) {
+        if (ref.owner._id != req.user.id) {
           errors.notpermitted = "You can add refs only in folders you own";
           return res.status(401).json(errors);
         }
@@ -193,6 +176,47 @@ router.post(
       .catch(err =>
         res.status(404).json({ error: "Error during adding new ref" })
       );
+  }
+);
+
+router.get(
+  "/rootFolder/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Refs.findOne({ owner: req.params.id, isRoot: true })
+      .populate("children", [
+        "name",
+        "_id",
+        "description",
+        "isFolder",
+        "isPrivate",
+        "favorites"
+      ])
+      .then(root => {
+        res.json(
+          root.children.filter(child => child.isFolder && !child.isPrivate)
+        );
+      })
+      .catch(console.log);
+  }
+);
+
+router.get(
+  "/addFavorite/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Refs.findById(req.params.id).then(ref => {
+      const alreadyFavorited = ref.favorites.find(f => f == req.user.id);
+      let isAdded;
+      if (!alreadyFavorited) {
+        ref.favorites.push(req.user.id);
+        isAdded = true;
+      } else {
+        ref.favorites = ref.favorites.filter(f => f != req.user.id);
+        isAdded = false;
+      }
+      ref.save().then(res.json(isAdded));
+    });
   }
 );
 

@@ -59,7 +59,10 @@ class RefTable extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.currentFolder !== this.props.match.params.id) {
+    if (
+      prevState.currentFolder !== this.props.match.params.id &&
+      prevProps.refs.refContent.length !== 0
+    ) {
       this.props.getRefs(this.props.match.params.id);
       this.setState({ currentFolder: this.props.match.params.id });
     }
@@ -132,7 +135,17 @@ class RefTable extends Component {
                       Delete
                     </TableCell>
                   </React.Fragment>
-                ) : null}
+                ) : (
+                  <TableCell
+                    style={{
+                      textAlign: "center",
+                      width: "5%",
+                      color: "white"
+                    }}
+                  >
+                    Favorite
+                  </TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>

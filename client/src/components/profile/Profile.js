@@ -7,6 +7,8 @@ import ProfileAbout from "./ProfileAbout";
 import ProfileGithub from "./ProfileGithub";
 import Spinner from "../common/Spinner";
 import { getProfileByUsername } from "../../actions/profileActions";
+import ProfileFolders from "./ProfileFolders";
+import ProfileFavorites from "./ProfileFavorites";
 
 class Profile extends Component {
   componentDidMount() {
@@ -45,6 +47,8 @@ class Profile extends Component {
 
           <ProfileHeader profile={profile} />
           <ProfileAbout profile={profile} />
+          <ProfileFolders profile={profile} />
+          <ProfileFavorites profile={profile} />
           {profile.githubusername ? (
             <ProfileGithub username={profile.githubusername} />
           ) : null}

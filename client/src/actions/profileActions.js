@@ -6,7 +6,9 @@ import {
   CLEAR_CURRENT_PROFILE,
   SET_CURRENT_USER,
   GET_PROFILES,
-  GET_ERRORS
+  GET_ERRORS,
+  GET_FOLDERS,
+  GET_FAVORITES
 } from "./types";
 
 export const getCurrentProfile = () => dispatch => {
@@ -23,6 +25,30 @@ export const getCurrentProfile = () => dispatch => {
       dispatch({
         type: GET_PROFILE,
         payload: {}
+      })
+    );
+};
+
+export const getRootFolderByUserId = id => dispatch => {
+  axios
+    .get(`/api/refs/rootFolder/${id}`)
+    .then(res => dispatch({ type: GET_FOLDERS, payload: res.data }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const getFavoriteFolders = id => dispatch => {
+  axios
+    .get(`/api/refs/favorites/${id}`)
+    .then(res => dispatch({ type: GET_FAVORITES, payload: res.data }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
       })
     );
 };

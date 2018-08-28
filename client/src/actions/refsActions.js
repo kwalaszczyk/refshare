@@ -45,6 +45,18 @@ export const editRef = refData => dispatch => {
     );
 };
 
+export const addFavorite = (id, userId) => dispatch => {
+  axios
+    .get(`/api/refs/addFavorite/${id}`)
+    .then(res => {
+      dispatch({
+        type: SHOW_SNACKBAR,
+        payload: `${res.data ? "Added to " : "Removed from "} favorites!`
+      });
+    })
+    .catch(console.log);
+};
+
 export const addRef = (id, refData) => dispatch => {
   axios
     .post(`/api/refs/addRef/${id}`, refData)
@@ -54,7 +66,8 @@ export const addRef = (id, refData) => dispatch => {
         name: res.data.name,
         isFolder: res.data.isFolder,
         children: res.data.children,
-        description: res.data.description
+        description: res.data.description,
+        favorites: res.data.favorites
       };
       dispatch({ type: ADD_REF, payload: newRef });
     })

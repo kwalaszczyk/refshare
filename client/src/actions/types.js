@@ -18,3 +18,5 @@ export const EDIT_REF = "EDIT_REF";
 export const SHOW_SNACKBAR = "SHOW_SNACKBAR";
 export const CLOSE_SNACKBAR = "CLOSE_SNACKBAR";
 export const GET_BREADCRUMBS = "GET_BREADCRUMBS";
+export const GET_FOLDERS = "GET_FOLDERS";
+export const GET_FAVORITES = "GET_FAVORITES";

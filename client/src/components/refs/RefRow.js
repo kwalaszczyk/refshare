@@ -2,13 +2,20 @@ import React, { Component } from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import FolderIcon from "@material-ui/icons/Folder";
+import FolderSharedIcon from "@material-ui/icons/FolderShared";
 import InsertLinkIcon from "@material-ui/icons/InsertLink";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import IconButton from "@material-ui/core/IconButton";
 import { connect } from "react-redux";
-import { deleteRef, showSnackbar } from "../../actions/refsActions";
+import {
+  deleteRef,
+  showSnackbar,
+  addFavorite
+} from "../../actions/refsActions";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import RefEditRowDialog from "./RefEditRowDialog";
@@ -27,12 +34,25 @@ class RefRow extends Component {
     this.props.deleteRef(row_id);
   };
 
+  onFavoriteClick = row_id => {
+    this.props.addFavorite(row_id, this.props.auth.user.id);
+    this.setState({ isFavorite: !this.state.isFavorite });
+  };
+
   state = {
-    to: ""
+    to: "",
+    isFavorite: false
   };
 
   componentDidMount() {
-    this.setState({ to: this.props.to });
+    this.setState({
+      to: this.props.to,
+      isFavorite: this.props.row.favorites.find(
+        f => f === this.props.auth.user.id
+      )
+        ? true
+        : false
+    });
   }
 
   addProtocolToLink = url => {
@@ -49,11 +69,18 @@ class RefRow extends Component {
   render() {
     const { row, isOwned, classes } = this.props;
     const to = row.isFolder ? row._id : row.name;
-
     return (
       <TableRow key={row._id}>
         <TableCell>
-          {row.isFolder ? <FolderIcon /> : <InsertLinkIcon />}
+          {row.isFolder ? (
+            row.isPrivate ? (
+              <FolderIcon />
+            ) : (
+              <FolderSharedIcon />
+            )
+          ) : (
+            <InsertLinkIcon />
+          )}
         </TableCell>
         {row.isFolder ? (
           <TableCell
@@ -108,12 +135,31 @@ class RefRow extends Component {
               </IconButton>
             </TableCell>
           </React.Fragment>
-        ) : null}
+        ) : (
+          <TableCell>
+            {this.state.isFavorite ? (
+              <FavoriteIcon
+                style={{ color: "red", cursor: "pointer" }}
+                onClick={this.onFavoriteClick.bind(this, row._id)}
+              />
+            ) : (
+              <FavoriteBorderIcon
+                style={{ cursor: "pointer" }}
+                onClick={this.onFavoriteClick.bind(this, row._id)}
+              />
+            )}
+          </TableCell>
+        )}
       </TableRow>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
 export default connect(
-  null,
-  { deleteRef, showSnackbar }
+  mapStateToProps,
+  { deleteRef, showSnackbar, addFavorite }
 )(withStyles(styles)(RefRow));

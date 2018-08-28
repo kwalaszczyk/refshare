@@ -26,6 +26,12 @@ const RefsSchema = new Schema({
       ref: "refs"
     }
   ],
+  favorites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "users"
+    }
+  ],
   parent: {
     type: Schema.Types.ObjectId,
     ref: "refs"
