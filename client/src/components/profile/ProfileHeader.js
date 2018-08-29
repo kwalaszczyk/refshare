@@ -1,7 +1,14 @@
-import React, { Component } from 'react';
-import isEmpty from '../../validation/is-empty';
+import React, { Component } from "react";
+import isEmpty from "../../validation/is-empty";
 
 class ProfileHeader extends Component {
+  addProtocolToLink = url => {
+    if (!/^https?:\/\//i.test(url)) {
+      url = "http://" + url;
+    }
+    return url;
+  };
+
   render() {
     const { profile } = this.props;
     return (
@@ -32,7 +39,10 @@ class ProfileHeader extends Component {
               </p>
               <p className="social-links">
                 {isEmpty(profile.website) ? null : (
-                  <a href={profile.website} target="_blank">
+                  <a
+                    href={this.addProtocolToLink(profile.website)}
+                    target="_blank"
+                  >
                     <i className="fas fa-globe" />
                   </a>
                 )}

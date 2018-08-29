@@ -9,7 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { addRef } from "../../actions/refsActions";
+import { addRef, clearErrors } from "../../actions/refsActions";
 
 const styles = theme => ({
   button: {
@@ -34,11 +34,14 @@ class RefDialog extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.clearErrors();
   };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({
+        errors: nextProps.errors
+      });
     }
   }
 
@@ -123,5 +126,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addRef }
+  { addRef, clearErrors }
 )(withStyles(styles)(RefDialog));

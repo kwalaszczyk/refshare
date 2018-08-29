@@ -13,6 +13,9 @@ router.get(
     Refs.find({ favorites: req.params.id })
       .populate("owner", ["name", "id", "username"])
       .then(folders => {
+        folders = folders.filter(
+          folder => (folder.isFolder && !folder.isPrivate ? folder : null)
+        );
         res.json(folders);
       })
       .catch(err => res.status(404).json(err));

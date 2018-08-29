@@ -131,6 +131,7 @@ class CreateProfile extends Component {
     const options = [
       { label: "Select Professional Status", value: 0 },
       { label: "Junior Developer", value: "Junior Developer" },
+      { label: "Regular Developer", value: "Developer" },
       { label: "Senior Developer", value: "Senior Developer" },
       { label: "Manager", value: "Manager" },
       { label: "Student or Learning", value: "Student or Learning" },

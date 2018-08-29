@@ -48,7 +48,7 @@ class Dashboard extends Component {
               Welcome <strong>{user.name}</strong>
             </p>
             <p className="subheading smaller">
-              You have not yet setup a profile, please add some inf
+              Create own profile to access all functionalites of RefShare.
             </p>
             <Link to="/create-profile" className="btn btn-info">
               Create Profile
