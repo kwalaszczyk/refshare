@@ -22,7 +22,7 @@ class RefBreadcrumbs extends Component {
   render() {
     const { breadcrumbs } = this.props;
     return (
-      <div style={{ float: "left", marginTop: "20px", marginLeft: "30px" }}>
+      <div className="breadcrumbs">
         {breadcrumbs && this.generateBreadcrumbs(breadcrumbs)}
       </div>
     );

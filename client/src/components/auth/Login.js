@@ -89,7 +89,7 @@ class Login extends Component {
   };
 
   responseFacebook = response => {
-    if (response.status != null) this.signup(response, "facebook");
+    this.signup(response, "facebook");
   };
 
   render() {

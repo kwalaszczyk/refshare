@@ -22,7 +22,7 @@ class ProfileFolders extends Component {
         <div key={f._id} className="card card-body mb-2 repo">
           <div className="row">
             <div className="col-md-6">
-              <h4 className="subheading smaller">
+              <h4 className="subheading smaller folder">
                 <FolderSharedIcon />
                 <Link to={`/folder/${f._id}`}>{f.name}</Link>
               </h4>

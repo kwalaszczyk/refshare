@@ -7,12 +7,15 @@ import {
   GET_ERRORS,
   DELETE_POST,
   GET_POST,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  SET_POST_TEXT,
+  SET_COMMENT_TEXT
 } from "./types";
 
 // add single post to Feed
 export const addPost = postData => dispatch => {
   dispatch(clearErrors());
+  dispatch({ type: SET_POST_TEXT, payload: postData.text });
   axios
     .post("/api/posts", postData)
     .then(res =>
@@ -31,6 +34,7 @@ export const addPost = postData => dispatch => {
 
 export const addComment = (postId, commentData) => dispatch => {
   dispatch(clearErrors());
+  dispatch({ type: SET_COMMENT_TEXT, payload: commentData.text });
   axios
     .post(`/api/posts/comment/${postId}`, commentData)
     .then(res =>

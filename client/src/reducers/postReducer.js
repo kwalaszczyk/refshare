@@ -3,12 +3,16 @@ import {
   GET_POSTS,
   POST_LOADING,
   DELETE_POST,
-  GET_POST
+  GET_POST,
+  SET_POST_TEXT,
+  SET_COMMENT_TEXT
 } from "../actions/types";
 
 const initialState = {
   posts: [],
   post: {},
+  postText: "",
+  commentText: "",
   loading: false
 };
 
@@ -30,7 +34,8 @@ export default function(state = initialState, action) {
     case ADD_POST:
       return {
         ...state,
-        posts: [action.payload, ...state.posts]
+        posts: [action.payload, ...state.posts],
+        postText: ""
       };
     case DELETE_POST:
       return {
@@ -41,7 +46,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         post: action.payload,
+        commentText: "",
         loading: false
+      };
+    case SET_POST_TEXT:
+      return {
+        ...state,
+        postText: action.payload
+      };
+    case SET_COMMENT_TEXT:
+      return {
+        ...state,
+        commentText: action.payload
       };
     default:
       return state;

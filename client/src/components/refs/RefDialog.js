@@ -57,20 +57,23 @@ class RefDialog extends Component {
     });
   };
   render() {
-    const { classes, label, type, errors, refs } = this.props;
+    const { label, type, errors } = this.props;
     return (
       <React.Fragment>
         <Button
           variant="outlined"
-          className={classes.button}
+          className="btn btn-light"
           onClick={this.handleClickOpen}
           style={{
             display: "inline-block",
             float: "right",
-            marginRight: "20px"
+            marginRight: "20px",
+            border: "0px",
+            marginTop: "10px",
+            marginBottom: "10px"
           }}
         >
-          <AddCircleIcon style={{ marginRight: "10px" }} />
+          <AddCircleIcon />
           {label}
         </Button>
         <Dialog

@@ -80,36 +80,68 @@ class RefTable extends Component {
 
     return (
       <div className="custom-template not-vert-center">
-        <Paper className={classes.root}>
-          <RefBreadcrums />
-          {isOwned ? (
-            <React.Fragment>
-              <RefDialog
-                currentFolderId={this.props.match.params.id}
-                refId={refs}
-                label={"add link"}
-                type={"link"}
-              />
-              <RefDialog
-                currentFolderId={this.props.match.params.id}
-                label={"add folder"}
-                type={"folder"}
-              />
-            </React.Fragment>
-          ) : null}
-          {errors.norefs && (
-            <h3>Sorry! {errors.norefs}. Ask owner to make it public.</h3>
-          )}
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow style={{ backgroundColor: "#0c1931" }}>
-                <TableCell style={{ width: "5%", color: "white" }} />
-                <TableCell style={{ width: "15%", color: "white" }}>
-                  Name
-                </TableCell>
-                <TableCell style={{ color: "white" }}>Description</TableCell>
-                {isOwned ? (
-                  <React.Fragment>
+        <div className="container">
+          <Paper className={classes.root}>
+            <RefBreadcrums />
+            {isOwned ? (
+              <React.Fragment>
+                <RefDialog
+                  currentFolderId={this.props.match.params.id}
+                  refId={refs}
+                  label={"add link"}
+                  type={"link"}
+                />
+                <RefDialog
+                  currentFolderId={this.props.match.params.id}
+                  label={"add folder"}
+                  type={"folder"}
+                />
+              </React.Fragment>
+            ) : null}
+            {errors.norefs && (
+              <h3>Sorry! {errors.norefs}. Ask owner to make it public.</h3>
+            )}
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow style={{ backgroundColor: "#0c1931" }}>
+                  <TableCell style={{ width: "5%", color: "white" }} />
+                  <TableCell style={{ width: "15%", color: "white" }}>
+                    Name
+                  </TableCell>
+                  <TableCell style={{ color: "white" }}>Description</TableCell>
+                  {isOwned ? (
+                    <React.Fragment>
+                      <TableCell
+                        style={{
+                          textAlign: "center",
+                          width: "5%",
+                          color: "white"
+                        }}
+                      >
+                        Edit
+                      </TableCell>
+                      <TableCell
+                        numeric={true}
+                        style={{
+                          width: "5%",
+                          color: "white",
+                          textAlign: "center"
+                        }}
+                      >
+                        Copy to clipboard
+                      </TableCell>
+                      <TableCell
+                        numeric={true}
+                        style={{
+                          width: "5%",
+                          color: "white",
+                          textAlign: "center"
+                        }}
+                      >
+                        Delete
+                      </TableCell>
+                    </React.Fragment>
+                  ) : (
                     <TableCell
                       style={{
                         textAlign: "center",
@@ -117,49 +149,19 @@ class RefTable extends Component {
                         color: "white"
                       }}
                     >
-                      Edit
+                      Favorite
                     </TableCell>
-                    <TableCell
-                      numeric={true}
-                      style={{
-                        width: "5%",
-                        color: "white",
-                        textAlign: "center"
-                      }}
-                    >
-                      Copy to clipboard
-                    </TableCell>
-                    <TableCell
-                      numeric={true}
-                      style={{
-                        width: "5%",
-                        color: "white",
-                        textAlign: "center"
-                      }}
-                    >
-                      Delete
-                    </TableCell>
-                  </React.Fragment>
-                ) : (
-                  <TableCell
-                    style={{
-                      textAlign: "center",
-                      width: "5%",
-                      color: "white"
-                    }}
-                  >
-                    Favorite
-                  </TableCell>
-                )}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <RefRow key={row._id} row={row} isOwned={isOwned} />
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
+                  )}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map(row => (
+                  <RefRow key={row._id} row={row} isOwned={isOwned} />
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
