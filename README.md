@@ -1,10 +1,10 @@
-<h1 align="center"> <a href="http://shrouded-sands-46900.herokuapp.com/" target="_blank">RefShare </a></h1>
+<h1 align="center" width="70%"><a href="http://shrouded-sands-46900.herokuapp.com/"><img src="https://i.imgur.com/gfcW2mB.png"/></a></h1>
 <h3 align="center">Knowledge center - social bookmarking website for developers, programmers or hobbyists.</h3>
 <br/>
 
 ## Introduction
 RefShare is an open source fullstack web application created for everyone who values order and harmony in their resources and for those who want to increase personal growth by looking for new content as guides, tutorials, articles or docs. RefShare is a perfect place for those who want to share their resources with others, while at the same time looking for new inspirations and want to extend the horizons of their competences.<br/>
-If you have no idea where to get knowledge from, would to ask experienced programmers for their opionions or would to share your selected links with others? Be free to create an account and be part of the best social web bookmarking network.
+If you have no idea where to get knowledge from, would to ask experienced programmers for their opinions or would to share your selected links with others? Be free to create an account and be part of the best social web bookmarking network.
 
 ## Getting Started
 
@@ -85,7 +85,7 @@ $ npm run client
 ## Deployment (Heroku)
 
 RefShare has support in deploying application to [Heroku](https://www.heroku.com/) which is a cloud platform as a service (PaaS) supporting several programming languages.</br>
-Create you own account, install [Heroku-CLI](https://devcenter.heroku.com/articles/heroku-cli) and run `heroku app` in CLI, next provide enviorment `Config Vars` in Heroku website, including MongoDB URI and secret phrase.<br/><br/>
+Create you own account, install [Heroku-CLI](https://devcenter.heroku.com/articles/heroku-cli) and run `heroku app` in CLI, next provide enviroment `Config Vars` in Heroku website, including MongoDB URI and secret phrase.<br/><br/>
 In `package.json` file there is a script `"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"`, which is used by Heroku. With this script Heroku automatically builds client application in way we want to. `NPM_CONFIG_PRODUCTION=false` flag is to tell Heroku to download all dev-dependencies for client app.
 
 ## Used technologies
