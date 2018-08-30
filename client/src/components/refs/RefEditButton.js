@@ -19,7 +19,6 @@ class RefEditButton extends Component {
     const dialogData = {
       open: true,
       action: "edit",
-      type: this.props.type,
       refData: this.props.row,
       type: this.props.row.isFolder ? "folder" : "link"
     };
