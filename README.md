@@ -1,5 +1,5 @@
 <h1 align="center" width="70%"><a href="http://shrouded-sands-46900.herokuapp.com/"><img src="https://i.imgur.com/gfcW2mB.png"/></a></h1>
-<h3 align="center">Knowledge center - social bookmarking website for developers, programmers or hobbyists.<br> <b>LIVE:</b> http://shrouded-sands-46900.herokuapp.com</h3>
+<h3 align="center">Knowledge center - social bookmarking website for developers, programmers or hobbyists.<br> <b>LIVE:</b> https://shrouded-sands-46900.herokuapp.com</h3>
 <br/>
 
 ## Introduction
