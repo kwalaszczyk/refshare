@@ -18,7 +18,7 @@ import {
   showSnackbar
 } from "../../actions/refsActions";
 import RefRow from "./RefRow";
-import RefDialog from "./RefDialog";
+import RefAddButton from "./RefAddButton";
 import RefDialogItem from "./RefDialogItem";
 import RefBreadcrums from "./RefBreadcrumbs";
 
@@ -87,13 +87,13 @@ class RefTable extends Component {
             <RefDialogItem />
             {isOwned ? (
               <React.Fragment>
-                <RefDialog
+                <RefAddButton
                   currentFolderId={this.props.match.params.id}
                   refId={refs}
                   label={"add link"}
                   type={"link"}
                 />
-                <RefDialog
+                <RefAddButton
                   currentFolderId={this.props.match.params.id}
                   label={"add folder"}
                   type={"folder"}

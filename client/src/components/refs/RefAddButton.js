@@ -14,7 +14,7 @@ const styles = theme => ({
   }
 });
 
-class RefDialog extends Component {
+class RefAddButton extends Component {
   handleClickOpen = () => {
     const dialogData = { open: true, action: "add", type: this.props.type };
     this.props.openDialog(dialogData);
@@ -53,4 +53,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { addRef, clearErrors, openDialog }
-)(withStyles(styles)(RefDialog));
+)(withStyles(styles)(RefAddButton));

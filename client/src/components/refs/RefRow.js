@@ -18,7 +18,7 @@ import {
 } from "../../actions/refsActions";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import RefEditRowDialog from "./RefEditRowDialog";
+import RefEditButton from "./RefEditButton";
 
 const styles = theme => ({
   button: {
@@ -104,7 +104,7 @@ class RefRow extends Component {
         {isOwned ? (
           <React.Fragment>
             <TableCell numeric={true}>
-              <RefEditRowDialog
+              <RefEditButton
                 name={row.name}
                 row={row}
                 description={row.description}
