@@ -9,7 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { withStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import { connect } from "react-redux";
-import { addRef, editRef } from "../../actions/refsActions";
+import { addRef, editRef, openDialog } from "../../actions/refsActions";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import LockIcon from "@material-ui/icons/Lock";
@@ -33,7 +33,15 @@ class RefEditRowDialog extends Component {
   };
 
   handleClickOpen = () => {
-    this.setState({ open: true });
+    // this.setState({ open: true });
+    const dialogData = {
+      open: true,
+      action: "edit",
+      type: this.props.type,
+      refData: this.props.row,
+      type: row.isFolder ? "folder" : "link"
+    };
+    this.props.openDialog(dialogData);
   };
 
   handleClose = () => {
@@ -83,7 +91,7 @@ class RefEditRowDialog extends Component {
           <EditIcon />
           {label}
         </Button>
-        <Dialog
+        {/* <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
@@ -131,7 +139,7 @@ class RefEditRowDialog extends Component {
               Update
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
       </div>
     );
   }
@@ -143,5 +151,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addRef, editRef }
+  { addRef, editRef, openDialog }
 )(withStyles(styles)(RefEditRowDialog));

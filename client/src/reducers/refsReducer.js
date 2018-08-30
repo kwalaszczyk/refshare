@@ -5,7 +5,9 @@ import {
   EDIT_REF,
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR,
-  GET_BREADCRUMBS
+  GET_BREADCRUMBS,
+  OPEN_DIALOG,
+  CLOSE_DIALOG
 } from "../actions/types";
 
 const initialState = {
@@ -15,7 +17,8 @@ const initialState = {
   loading: false,
   snackbarText: "",
   snackbarIsOpen: false,
-  breadcrumbs: []
+  breadcrumbs: [],
+  dialogData: {}
 };
 
 export default function(state = initialState, action) {
@@ -35,14 +38,16 @@ export default function(state = initialState, action) {
     case ADD_REF:
       return {
         ...state,
-        refContent: [action.payload, ...state.refContent]
+        refContent: [action.payload, ...state.refContent],
+        dialogData: { ...state.dialogData, open: false }
       };
     case EDIT_REF:
       return {
         ...state,
         refContent: state.refContent.map(
           ref => (ref._id !== action.payload._id ? ref : action.payload)
-        )
+        ),
+        dialogData: { open: false }
       };
     case SHOW_SNACKBAR:
       return {
@@ -60,6 +65,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         breadcrumbs: action.payload
+      };
+    case OPEN_DIALOG:
+      return {
+        ...state,
+        dialogData: action.payload
+      };
+    case CLOSE_DIALOG:
+      return {
+        ...state,
+        dialogData: { open: false }
       };
     default:
       return state;

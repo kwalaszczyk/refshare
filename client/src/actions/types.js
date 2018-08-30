@@ -22,3 +22,5 @@ export const GET_FOLDERS = "GET_FOLDERS";
 export const SET_POST_TEXT = "SET_POST_TEXT";
 export const SET_COMMENT_TEXT = "SET_COMMENT_TEXT";
 export const GET_FAVORITES = "GET_FAVORITES";
+export const OPEN_DIALOG = "OPEN_DIALOG";
+export const CLOSE_DIALOG = "CLOSE_DIALOG";

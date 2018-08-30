@@ -139,6 +139,12 @@ router.post(
   "/editRef/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { validationErrors, isValid } = validateRefsInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(validationErrors);
+    }
+
     Refs.findByIdAndUpdate(req.params.id, req.body, { new: true }).then(ref => {
       res.json(ref);
     });

@@ -9,7 +9,9 @@ import {
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR,
   CLEAR_ERRORS,
-  GET_BREADCRUMBS
+  GET_BREADCRUMBS,
+  OPEN_DIALOG,
+  CLOSE_DIALOG
 } from "./types";
 
 export const getRefs = id => async dispatch => {
@@ -28,22 +30,18 @@ export const getRefs = id => async dispatch => {
   }
 };
 
-export const editRef = refData => dispatch => {
-  axios
-    .post(`/api/refs/editRef/${refData.id}`, refData)
-    .then(res => dispatch({ type: EDIT_REF, payload: res.data }))
-    .then(
-      dispatch({
-        type: SHOW_SNACKBAR,
-        payload: `${refData.isFolder === true ? "Folder " : "Link "} edited!`
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
+export const openDialog = dialogData => dispatch => {
+  dispatch({
+    type: OPEN_DIALOG,
+    payload: dialogData
+  });
+};
+
+export const closeDialog = () => dispatch => {
+  dispatch({
+    type: CLOSE_DIALOG
+  });
+  dispatch({ type: CLEAR_ERRORS });
 };
 
 export const addFavorite = (id, userId) => dispatch => {
@@ -83,6 +81,25 @@ export const addRef = (id, refData) => dispatch => {
         payload: err.response.data
       });
     });
+};
+
+export const editRef = refData => dispatch => {
+  axios
+    .post(`/api/refs/editRef/${refData.id}`, refData)
+    .then(res => {
+      dispatch({ type: EDIT_REF, payload: res.data });
+      dispatch({ type: CLEAR_ERRORS });
+      dispatch({
+        type: SHOW_SNACKBAR,
+        payload: `${refData.isFolder === true ? "Folder " : "Link "} edited!`
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 };
 
 export const deleteRef = id => dispatch => {

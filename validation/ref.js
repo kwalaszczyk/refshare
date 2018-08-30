@@ -5,11 +5,13 @@ module.exports = function validateRefsInput(data) {
   let validationErrors = {};
 
   if (isEmpty(data.name)) {
-    validationErrors.url = "Url cannot be empty";
+    validationErrors.name = `${
+      data.isFolder ? "Name of folder" : "URL"
+    } cannot be empty`;
   }
 
   if (!isEmpty(data.name) && !data.isFolder && !Validator.isURL(data.name)) {
-    validationErrors.url = "Not a valid URL";
+    validationErrors.name = "Not a valid URL";
   }
 
   return {

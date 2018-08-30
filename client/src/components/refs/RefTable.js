@@ -19,6 +19,7 @@ import {
 } from "../../actions/refsActions";
 import RefRow from "./RefRow";
 import RefDialog from "./RefDialog";
+import RefDialogItem from "./RefDialogItem";
 import RefBreadcrums from "./RefBreadcrumbs";
 
 const styles = theme => ({
@@ -83,6 +84,7 @@ class RefTable extends Component {
         <div className="container">
           <Paper className={classes.root}>
             <RefBreadcrums />
+            <RefDialogItem />
             {isOwned ? (
               <React.Fragment>
                 <RefDialog
