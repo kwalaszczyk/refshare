@@ -674,12 +674,12 @@ textarea {
 .RefTable-table-2 {
   margin-top: 55px !important; }
 
-.RefTable-root-1 .btn-light {
+.refs-table .btn-light {
   width: 150px;
   height: 40px;
   line-height: 25px;
   font-size: 13px; }
-  .RefTable-root-1 .btn-light svg {
+  .refs-table .btn-light svg {
     margin-right: 5px;
     font-size: 18px;
     margin-top: -2px; }

@@ -80,7 +80,7 @@ class RefTable extends Component {
     }
 
     return (
-      <div className="custom-template not-vert-center">
+      <div className="custom-template not-vert-center refs-table">
         <div className="container">
           <Paper className={classes.root}>
             <RefBreadcrums />
