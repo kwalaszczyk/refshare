@@ -1,5 +1,5 @@
 <h1 align="center" width="70%"><a href="http://shrouded-sands-46900.herokuapp.com/"><img src="https://i.imgur.com/gfcW2mB.png"/></a></h1>
-<h3 align="center">Knowledge center - social bookmarking website for developers, programmers or hobbyists.</h3>
+<h3 align="center">Knowledge center - social bookmarking website for developers, programmers or hobbyists.<br> <b>LIVE:</b> http://shrouded-sands-46900.herokuapp.com</h3>
 <br/>
 
 ## Introduction
@@ -92,13 +92,45 @@ In `package.json` file there is a script `"heroku-postbuild": "NPM_CONFIG_PRODUC
 
 ### Backend
 
+* [Node.js](https://nodejs.org/en/) - JavaScript runtime built on Chrome's V8 JavaScript engine
 * [ExpressJS](https://expressjs.com/) - Node.js web application framework
+* [Mongoose ODM](https://mongoosejs.com/) - Object modeling for node.js
+* [nodemon](https://www.npmjs.com/package/nodemon) - Automatically restarting the node application when file changes 
+* [Passport.js](http://www.passportjs.org/) - Authentication middleware for Node.js
+* [passport-jwt](https://www.npmjs.com/package/passport-jwt) - Strategy for authenticating with a JSON Web Token
+* [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - An implementation of JSON Web Tokens
+* [body-parser](https://www.npmjs.com/package/body-parser) - Node.js body parsing middleware
+* [bcrypt.js](https://www.npmjs.com/package/bcryptjs) - Optimized bcrypt in JavaScript
+* [validator.js](https://www.npmjs.com/package/validator) - A library of string validators and sanitizers
+
 
 ### Frontend
 
 * [ReactJS](https://reactjs.org/) - A JavaScript library for building user interfaces
+* [Redux + React-Redux](https://redux.js.org/basics/usagewithreact) - State container for JavaScript apps
+* [Create-React-App](https://reactjs.org/docs/create-a-new-react-app.html) - best way to start building a new single-page application in React
+* [React Router](https://github.com/ReactTraining/react-router) - Declarative routing for React
+* [Redux-thunk](https://github.com/reduxjs/redux-thunk) - Redux middleware to write action creators that return a function instead of an action
+* [Redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension) - provides power-ups for your Redux development workflow
+* [React-devtools](https://github.com/facebook/react-devtools) - lets to inspect the React component hierarchy, including component props and state
+* [axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js
+* [Material UI](https://material-ui.com/) - React components that implement Google's Material Design
+* [react-facebook-login](https://www.npmjs.com/package/react-facebook-login) - A Facebook OAuth Sign-in / Log-in Component for React
+* [react-google-login](https://www.npmjs.com/package/react-google-login) - A Google OAuth Sign-in / Log-in Component for React
+* [jwt-decode](https://www.npmjs.com/package/jwt-decode) - Library that helps decoding JWTs token which are Base64Url encoded
+* [classnames](https://www.npmjs.com/package/classnames) - A simple JavaScript utility for conditionally joining classNames together
+* [react-copy-to-clipboard](https://www.npmjs.com/package/react-copy-to-clipboard) - Copy to clipboard React component
 
-## Authors
+
+## Used practics
+
+* As mentioned before, client-side was create using [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) package. This means that a lot of boilerplate was created by script. In this way there is no need to configure things e.g. bundlers like Webpack or Babel loaders, plugins and module rules. To make possible for local client side to communicate with local backend is to use a `proxy`, in `package.json` file add `proxy": "http://localhost:5000/`, this tells Webpack development server to proxy API requests to API server, given that Express server is running on `localhost:5000`.
+
+* Authenticate is based on JSON Web Tokens. After successful autorization (using standard username/password method or 3rd party services like Facebook or Google), server sign a new JWT for user. For safety reasons every JWT expires in one hour. Algoritm takes user data like his ID, name and picture and then generate a new JWT using secret phrase. New JSON Web Token is returned to a user as [Bearer type token](https://jwt.io/introduction/), store in his agent local storage and pass in every HTTP request made with axios in Autorization Header. To debug JWT use online [debugger](https://jwt.io/).
+
+* For better understanding of application flow it is recommended to use brower extensions like [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) and [React DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en). `store.js` is adapted to work with these extensions by using special function `composeWithDevTools` which is invoked at the time of creating Redux's store object.
+
+## Author
 
 * **Krystian Walaszczyk** [Selthias](https://github.com/Selthias)
 
