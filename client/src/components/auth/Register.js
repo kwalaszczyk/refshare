@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser, loginUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import { GoogleLogin } from "react-google-login";
 import axios from "axios";
@@ -92,7 +92,7 @@ class Register extends Component {
   };
 
   responseFacebook = response => {
-    if (response.status != null) this.signup(response, "facebook");
+    this.signup(response, "facebook");
   };
 
   render() {
@@ -179,5 +179,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { registerUser }
+  { registerUser, loginUser }
 )(withRouter(Register));
