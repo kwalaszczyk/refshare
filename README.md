@@ -126,9 +126,12 @@ In `package.json` file there is a script `"heroku-postbuild": "NPM_CONFIG_PRODUC
 
 * As mentioned before, client-side was create using [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) package. This means that a lot of boilerplate was created by script. In this way there is no need to configure things e.g. bundlers like Webpack or Babel loaders, plugins and module rules. To make possible for local client side to communicate with local backend is to use a `proxy`, in `package.json` file add `proxy": "http://localhost:5000/`, this tells Webpack development server to proxy API requests to API server, given that Express server is running on `localhost:5000`.
 
+* For better understanding of application flow it is recommended to use brower extensions like [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) and [React DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en). `store.js` is adapted to work with these extensions by using special function `composeWithDevTools` which is invoked at the time of creating Redux's store object.
+
 * Authenticate is based on JSON Web Tokens. After successful autorization (using standard username/password method or 3rd party services like Facebook or Google), server sign a new JWT for user. For safety reasons every JWT expires in one hour. Algoritm takes user data like his ID, name and picture and then generate a new JWT using secret phrase. New JSON Web Token is returned to a user as [Bearer type token](https://jwt.io/introduction/), store in his agent local storage and pass in every HTTP request made with axios in Autorization Header. To debug JWT use online [debugger](https://jwt.io/).
 
-* For better understanding of application flow it is recommended to use brower extensions like [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) and [React DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en). `store.js` is adapted to work with these extensions by using special function `composeWithDevTools` which is invoked at the time of creating Redux's store object.
+<p align="center"><img width="50%" height="50%" src="https://i.imgur.com/q5q8Ix0.png"></p><p align="center">OAuth Facebook login screen</p>
+
 
 ## Author
 
