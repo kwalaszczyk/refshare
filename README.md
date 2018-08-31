@@ -4,7 +4,7 @@
 
 ## Introduction
 RefShare is an open source fullstack web application created for everyone who values order and harmony in their resources and for those who want to increase personal growth by looking for new content as guides, tutorials, articles or docs. RefShare is a perfect place for those who want to share their resources with others, while at the same time looking for new inspirations and want to extend the horizons of their competences.<br/>
-If you have no idea where to get knowledge from, would to ask experienced programmers for their opinions or would to share your selected links with others? Be free to create an account and be part of the best social web bookmarking network.
+If you have no idea where to get knowledge from, or would you like to ask experienced programmers for their opinions or to share your selected links with others? Be free to create an account and be part of the best social web bookmarking network.
 
 ## Getting Started
 
@@ -32,7 +32,7 @@ Then, go to `/client` folder and install all dependencies for client.
 ```bash
 $ cd client && npm install
 ```
-After those installation your source code is almost ready to run.
+After these installations your source code is almost ready to run.
 Last thing to do is configure a database connection. RefShare is using Moongose to create Schemas, so you have to deliver MongoDB connection. For this purpose create a new file in `/config` folder named `keys_dev.js`.
 This file has to be created in following structure:
 ```javascript
@@ -85,7 +85,7 @@ $ npm run client
 ## Deployment (Heroku)
 
 RefShare has support in deploying application to [Heroku](https://www.heroku.com/) which is a cloud platform as a service (PaaS) supporting several programming languages.</br>
-Create you own account, install [Heroku-CLI](https://devcenter.heroku.com/articles/heroku-cli) and run `heroku app` in CLI, next provide enviroment `Config Vars` in Heroku website, including MongoDB URI and secret phrase.<br/><br/>
+Create your own account, install [Heroku-CLI](https://devcenter.heroku.com/articles/heroku-cli) and run `heroku app` in CLI, next provide enviroment `Config Vars` in Heroku website, including MongoDB URI and secret phrase.<br/><br/>
 In `package.json` file there is a script `"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"`, which is used by Heroku. With this script Heroku automatically builds client application in way we want to. `NPM_CONFIG_PRODUCTION=false` flag is to tell Heroku to download all dev-dependencies for client app.
 
 ## Used technologies
@@ -125,11 +125,11 @@ In `package.json` file there is a script `"heroku-postbuild": "NPM_CONFIG_PRODUC
 
 ## Used practics
 
-* As mentioned before, client-side was create using [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) package. This means that a lot of boilerplate was created by script. In this way there is no need to configure things e.g. bundlers like Webpack or Babel loaders, plugins and module rules. To make possible for local client side to communicate with local backend is to use a `proxy`, in `package.json` file add `proxy": "http://localhost:5000/`, this tells Webpack development server to proxy API requests to API server, given that Express server is running on `localhost:5000`.
+* As mentioned before, client-side was create using [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) package. This means that a lot of boilerplate was created by a script. In this way there is no need to configure things e.g. bundlers like Webpack or Babel loaders, plugins and module rules. To make possible for local client side to communicate with local backend use `proxy` in `package.json` file. Add `proxy": "http://localhost:5000/`, this tells Webpack development server to proxy API requests to API server, given that Express server is running on `localhost:5000`.
 
 * For better understanding of application flow it is recommended to use brower extensions like [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en) and [React DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en). `store.js` is adapted to work with these extensions by using special function `composeWithDevTools` which is invoked at the time of creating Redux's store object.
 
-* Authenticate is based on JSON Web Tokens. After successful autorization (using standard username/password method or 3rd party services like Facebook or Google), server sign a new JWT for user. For safety reasons every JWT expires in one hour. Algoritm takes user data like his ID, name and picture and then generate a new JWT using secret phrase. New JSON Web Token is returned to a user as [Bearer type token](https://jwt.io/introduction/), store in his agent local storage and pass in every HTTP request made with axios in Autorization Header. To debug JWT use online [debugger](https://jwt.io/).
+* Authenticate is based on JSON Web Tokens. After successful autorization (using standard username/password method or 3rd party services like Facebook or Google), server signs a new JWT for an user. For safety reasons every JWT expires in one hour. Algoritm takes user data like his ID, name and picture and then generate a new JWT using secret phrase. New JSON Web Token is returned to a user as [Bearer type token](https://jwt.io/introduction/), stored in his agent's local storage and passed as Autorization Header in every HTTP request made with axios. To debug JWT use online [debugger](https://jwt.io/).
 
 <p align="center"><img width="50%" height="50%" src="https://i.imgur.com/q5q8Ix0.png"></p><p align="center">OAuth Facebook login screen</p>
 
