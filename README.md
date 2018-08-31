@@ -102,6 +102,7 @@ In `package.json` file there is a script `"heroku-postbuild": "NPM_CONFIG_PRODUC
 * [body-parser](https://www.npmjs.com/package/body-parser) - Node.js body parsing middleware
 * [bcrypt.js](https://www.npmjs.com/package/bcryptjs) - Optimized bcrypt in JavaScript
 * [validator.js](https://www.npmjs.com/package/validator) - A library of string validators and sanitizers
+* [express-sslify](https://www.npmjs.com/package/express-sslify) - Module enforces HTTPS connections
 
 
 ### Frontend
