@@ -71,7 +71,7 @@ class RefRow extends Component {
     const to = row.isFolder ? row._id : row.name;
     return (
       <TableRow key={row._id}>
-        <TableCell>
+        <TableCell style={{ paddingRight: "0px" }}>
           {row.isFolder ? (
             row.isPrivate ? (
               <FolderIcon />
@@ -103,7 +103,10 @@ class RefRow extends Component {
         <TableCell>{row.description}</TableCell>
         {isOwned ? (
           <React.Fragment>
-            <TableCell numeric={true}>
+            <TableCell
+              numeric={true}
+              style={{ paddingRight: "5px", textAlign: "center" }}
+            >
               <RefEditButton
                 name={row.name}
                 row={row}
@@ -111,7 +114,10 @@ class RefRow extends Component {
                 isPrivate={row.isPrivate}
               />
             </TableCell>
-            <TableCell numeric={true}>
+            <TableCell
+              numeric={true}
+              style={{ paddingRight: "5px", textAlign: "center" }}
+            >
               {!row.isFolder ? (
                 <CopyToClipboard style={{ cursor: "pointer" }} text={row.name}>
                   <FileCopyIcon
@@ -120,15 +126,18 @@ class RefRow extends Component {
                 </CopyToClipboard>
               ) : null}
             </TableCell>
-            <TableCell numeric={true}>
+            <TableCell
+              numeric={true}
+              style={{ paddingRight: "5px", textAlign: "center" }}
+            >
               <IconButton
                 className={classes.button}
                 aria-label="Delete"
                 color="primary"
+                style={{ cursor: "pointer" }}
               >
                 <DeleteIcon
                   onClick={this.onDeleteClick.bind(this, row._id, "delete")}
-                  style={{ cursor: "pointer" }}
                 >
                   delete
                 </DeleteIcon>

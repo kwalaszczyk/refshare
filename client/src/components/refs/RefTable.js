@@ -106,7 +106,9 @@ class RefTable extends Component {
             <Table className={classes.table}>
               <TableHead>
                 <TableRow style={{ backgroundColor: "#0c1931" }}>
-                  <TableCell style={{ width: "5%", color: "white" }} />
+                  <TableCell
+                    style={{ width: "5%", color: "white", paddingRight: "0px" }}
+                  />
                   <TableCell style={{ width: "15%", color: "white" }}>
                     Name
                   </TableCell>
@@ -117,7 +119,8 @@ class RefTable extends Component {
                         style={{
                           textAlign: "center",
                           width: "5%",
-                          color: "white"
+                          color: "white",
+                          paddingRight: "0px"
                         }}
                       >
                         Edit
@@ -127,7 +130,8 @@ class RefTable extends Component {
                         style={{
                           width: "5%",
                           color: "white",
-                          textAlign: "center"
+                          textAlign: "center",
+                          paddingRight: "0px"
                         }}
                       >
                         Copy to clipboard
@@ -137,7 +141,8 @@ class RefTable extends Component {
                         style={{
                           width: "5%",
                           color: "white",
-                          textAlign: "center"
+                          textAlign: "center",
+                          paddingRight: "0px"
                         }}
                       >
                         Delete
