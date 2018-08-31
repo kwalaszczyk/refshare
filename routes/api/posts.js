@@ -162,20 +162,27 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    Post.findById(req.params.id)
-      .then(post => {
-        const newComment = {
-          text: req.body.text,
-          name: req.body.name,
-          picture: req.body.picture,
-          user: req.user.id
-        };
+    Profile.findOne({ user: req.user.id }).then(profile =>
+      Post.findById(req.params.id)
+        .then(post => {
+          const username = profile != null ? profile.username : null;
+          const newComment = {
+            text: req.body.text,
+            name: req.body.name,
+            picture: req.body.picture,
+            user: req.user.id,
+            username: username
+          };
 
-        post.comments.unshift(newComment);
+          post.comments.push(newComment);
 
-        post.save().then(post => res.json(post));
-      })
-      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+          post.save().then(post => res.json(post));
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(404).json({ postnotfound: "No post found" });
+        })
+    );
   }
 );
 
