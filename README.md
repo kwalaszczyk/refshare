@@ -4,7 +4,7 @@
 
 ## Introduction
 RefShare is an open source fullstack web application created for everyone who values order and harmony in their resources and for those who want to increase personal growth by looking for new content as guides, tutorials, articles or docs. RefShare is a perfect place for those who want to share their resources with others, while at the same time looking for new inspirations and want to extend the horizons of their competences.<br/>
-If you have no idea where to get knowledge from, or would you like to ask experienced programmers for their opinions or to share your selected links with others? Be free to create an account and be part of the best social web bookmarking network.
+If you have no idea where to get knowledge from, or would you like to ask experienced programmers for their opinions or to share your selected links with others? Be free to create an account and be part of the best social web bookmarking network!
 
 ## Getting Started
 
